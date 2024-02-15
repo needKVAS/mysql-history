@@ -179,7 +179,7 @@ def create_triggers(config, table_name, h_table):
     id = uuid.uuid4().hex
     cols = columns(config, table_name)
     col_names = [col["COLUMN_NAME"] for col in cols]
-    values = ",".join(["NEW.%s" % col for col in col_names])
+    values = ", ".join(["NEW.%s" % col for col in col_names])
 
     # INSERT
     ins_trigger = """
@@ -189,12 +189,15 @@ def create_triggers(config, table_name, h_table):
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
     END;
-    INSERT INTO %(schema)s.%(h_table)s (`hst_id`, `hst_modified_date`, `hst_type`, `%(columns)s`)
-    VALUES (UUID(), SYSDATE(), 'I', `%(values)s`);
+    INSERT INTO %(schema)s.%(h_table)s (`%(key_field)s`, `%(date_field)s`, `%(type_field)s`, `%(columns)s`)
+    VALUES (UUID(), SYSDATE(), 'I', %(values)s);
     END""" % {
         "schema": config.database,
         "table": table_name,
         "h_table": h_table,
+        "key_field": config.key_field,
+        "date_field": config.date_field,
+        "type_field": config.type_field,
         "columns": "`,`".join(col_names),
         "values": values,
         "tprefix": config.ht_prefix,
@@ -212,12 +215,15 @@ def create_triggers(config, table_name, h_table):
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
     END;
-    INSERT INTO %(schema)s.%(h_table)s (hst_id, hst_modified_date, hst_type, `%(columns)s`)
-    VALUES (UUID(), SYSDATE(), 'U', `%(values)s`);
+    INSERT INTO %(schema)s.%(h_table)s (`%(key_field)s`, `%(date_field)s`, `%(type_field)s`, `%(columns)s`)
+    VALUES (UUID(), SYSDATE(), 'U', %(values)s);
     END""" % {
         "schema": config.database,
         "table": table_name,
         "h_table": h_table,
+        "key_field": config.key_field,
+        "date_field": config.date_field,
+        "type_field": config.type_field,
         "columns": "`,`".join(col_names),
         "values": values,
         "tprefix": config.ht_prefix,
@@ -236,12 +242,15 @@ def create_triggers(config, table_name, h_table):
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
     END;
-    INSERT INTO %(schema)s.%(h_table)s (`hst_id`, `hst_modified_date`, `hst_type`, `%(columns)s`)
-    VALUES (UUID(), SYSDATE(), 'D', `%(values)s`);
+    INSERT INTO %(schema)s.%(h_table)s (`%(key_field)s`, `%(date_field)s`, `%(type_field)s`, `%(columns)s`)
+    VALUES (UUID(), SYSDATE(), 'D', %(values)s);
     END""" % {
         "schema": config.database,
         "table": table_name,
         "h_table": h_table,
+        "key_field": config.key_field,
+        "date_field": config.date_field,
+        "type_field": config.type_field,
         "columns": "`,`".join(col_names),
         "values": del_values,
         "tprefix": config.ht_prefix,
