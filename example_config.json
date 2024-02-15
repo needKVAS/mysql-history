@@ -1,10 +1,15 @@
 {
-    "host": "172.17.0.2",
+    "host": "127.0.0.1",
     "user": "root",
-    "password": "root",
-    "database": "my_db",
-    "history_table_prefix": "h_",
+    "password": "",
+    "database": "test",
+    "history_table_prefix": "history_",
+	"history_table_postfix": "",
+	"history_trigger_prefix": "history_trigger_",
     "_comment": "includes and excludes are passed to re.match(), so leads will match leads and leads_audit!",
+	"key_field": "history_id",
+	"date_field": "history_modified_date",
+	"type_field": "history_type",
     "includes": [".*"],
-    "excludes": ["test.*"]
+    "excludes": []
 }
