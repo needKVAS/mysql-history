@@ -11,7 +11,3 @@ On execution, mysql-history connects to a MySQL database and creates:
     * every trigger inserts modified data to audit table specifying `hst_type` as 'I', 'U' or 'D'
 
 When source tables change just re-run the script and it will add new columns to audit tables and modify datatypes of existing ones if possible.
-
-# Requirements
-
-It requires MySQLdb and Python 2.7.x to function properly.
