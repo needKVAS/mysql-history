@@ -179,7 +179,7 @@ def create_triggers(config, table_name, h_table):
     id = uuid.uuid4().hex
     cols = columns(config, table_name)
     col_names = [col["COLUMN_NAME"] for col in cols]
-    values = ", ".join(["NEW.%s" % col for col in col_names])
+    values = ", ".join(["NEW.`%s`" % col for col in col_names])
 
     # INSERT
     ins_trigger = """
@@ -234,7 +234,7 @@ def create_triggers(config, table_name, h_table):
 
     # DELETE
     id = uuid.uuid4().hex
-    del_values = ",".join(["OLD." + col for col in col_names])
+    del_values = ",".join(["OLD.`%s`" % col for col in col_names])
     del_trigger = """
     CREATE TRIGGER %(tprefix)s%(id)s
     AFTER DELETE ON %(schema)s.%(table)s FOR EACH ROW
