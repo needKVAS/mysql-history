@@ -44,7 +44,8 @@ def columns(config, table_name):
     columns_query = """SELECT column_name, column_type, character_set_name, collation_name, column_default
                         FROM information_schema.columns
                         WHERE table_schema=%s
-                        AND table_name=%s"""
+                        AND table_name=%s
+                        ORDER BY ORDINAL_POSITION ASC"""
     config.cursor.execute(columns_query, (config.database, table_name))
     return config.cursor.fetchall()
 
